@@ -1,8 +1,9 @@
-import { type ProductItemType } from "@/types";
+import Link from "next/link";
+import { type Product } from "@/types";
 import { formatMoney } from "@/utils";
 
 type ProductListItemDescriptionProps = {
-	product: ProductItemType;
+	product: Product;
 };
 
 export const ProductListItemDescription = ({ product }: ProductListItemDescriptionProps) => {
@@ -10,10 +11,10 @@ export const ProductListItemDescription = ({ product }: ProductListItemDescripti
 		<div className="mt-4 flex justify-between">
 			<div>
 				<h3 className="text-sm text-gray-700">
-					<a href={"#"}>
+					<Link href={`/product/${product.id}`}>
 						<span aria-hidden="true" className="absolute inset-0" />
 						{product.name}
-					</a>
+					</Link>
 				</h3>
 				<p className="mt-1 text-sm text-gray-500">{product.category}</p>
 			</div>
