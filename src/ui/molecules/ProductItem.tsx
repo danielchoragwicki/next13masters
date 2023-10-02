@@ -1,9 +1,9 @@
 import { ProductListItemDescription } from "../atoms/ProductListItemDescription";
 import { ProductListItemImage } from "../atoms/ProductListItemImage";
-import { type Product } from "@/types";
+import { type ProductBaseFragment } from "@/gql/graphql";
 
 type ProductItemProps = {
-	product: Product;
+	product: ProductBaseFragment;
 };
 
 export const ProductItem = ({ product }: ProductItemProps) => {

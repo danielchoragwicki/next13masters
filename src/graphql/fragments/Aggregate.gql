@@ -1,0 +1,3 @@
+fragment Aggregate on Aggregate {
+	count
+}

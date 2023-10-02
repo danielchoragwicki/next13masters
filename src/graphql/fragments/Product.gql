@@ -1,0 +1,7 @@
+fragment ProductBase on Product {
+	id
+	name
+	slug
+	description
+	price
+}

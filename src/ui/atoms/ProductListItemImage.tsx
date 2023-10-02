@@ -1,7 +1,7 @@
-import { type Product } from "@/types";
+import { type ProductBaseFragment } from "@/gql/graphql";
 
 type ProductListItemImageProps = {
-	product: Product;
+	product: ProductBaseFragment;
 };
 
 export const ProductListItemImage = ({ product }: ProductListItemImageProps) => {

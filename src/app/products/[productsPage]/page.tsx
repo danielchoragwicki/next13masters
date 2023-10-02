@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Pagination } from "@/ui/organisms/Pagination";
 import { ProductList } from "@/ui/organisms/ProductList";
 import { getProductsList } from "@/utils/getProductsList";
+import { executeGraphql } from "@/utils/executeGraphql";
+import { ProductsGetListDocument } from "@/gql/graphql";
 
 export async function generateStaticParams({ params: {} }: { params: { productsPage: string } }) {
 	return [{ productsPage: "1" }, { productsPage: "2" }, { productsPage: "3" }];
@@ -11,6 +13,10 @@ export default async function ProductsPage({ params }: { params: { productsPage:
 	const page = parseInt(params.productsPage);
 
 	if (!(page > 0 && page <= 3)) return notFound();
+
+	const x = await executeGraphql(ProductsGetListDocument);
+
+	console.log("x", x);
 
 	const products = await getProductsList(page * 20);
 

@@ -1,5 +1,6 @@
 import { type Route } from "next";
 import { ActiveLink } from "../atoms/ActiveLink";
+import { CATEGORIES } from "@/constants";
 
 const items: {
 	title: string;
@@ -8,6 +9,11 @@ const items: {
 }[] = [
 	{ title: "Home", href: "/", exact: true },
 	{ title: "All", href: "/products" },
+	// @ts-expect-error abc
+	...CATEGORIES.map((category) => ({
+		title: category.name,
+		href: `/categories/${category.slug}`,
+	})),
 ];
 
 export const Navbar = () => {

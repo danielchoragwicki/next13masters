@@ -1,0 +1,18 @@
+query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {
+	categories(where: { slug: $slug }) {
+		...Category
+	}
+	productsConnection(first: $first, skip: $skip, where: { categories_some: { slug: $slug } }) {
+		aggregate {
+			...Aggregate
+		}
+		edges {
+			node {
+				...ProductBase
+			}
+		}
+		pageInfo {
+			...PageInfo
+		}
+	}
+}

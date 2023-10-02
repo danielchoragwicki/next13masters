@@ -1,0 +1,24 @@
+query CollectionPageCollections {
+	collections {
+		...Collection
+	}
+}
+
+query CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {
+	collections(where: { slug: $slug }) {
+		...Collection
+	}
+	productsConnection(first: $first, skip: $skip, where: { collections_some: { slug: $slug } }) {
+		aggregate {
+			...Aggregate
+		}
+		edges {
+			node {
+				...ProductBase
+			}
+		}
+		pageInfo {
+			...PageInfo
+		}
+	}
+}

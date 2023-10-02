@@ -13,6 +13,14 @@
 		"next/core-web-vitals"
 	],
 	"rules": {
+		"no-restricted-imports": [
+			"error",
+			{
+				"name": "next/router",
+				"message": "Please use next/navigation instead."
+			}
+		],
+
 		// sort imports
 		"import/order": "error",
 
