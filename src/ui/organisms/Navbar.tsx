@@ -1,5 +1,6 @@
 import { type Route } from "next";
 import { ActiveLink } from "../atoms/ActiveLink";
+import { SearchInput } from "../molecules/SearchInput";
 import { CATEGORIES } from "@/constants";
 
 const items: {
@@ -33,6 +34,7 @@ export const Navbar = () => {
 					</li>
 				))}
 			</ul>
+			<SearchInput />
 		</nav>
 	);
 };

@@ -17,6 +17,7 @@ const documents = {
     "query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  categories(where: {slug: $slug}) {\n    ...Category\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {categories_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CategoryPageBySlugDocument,
     "query CollectionPageCollections {\n  collections {\n    ...Collection\n  }\n}\n\nquery CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  collections(where: {slug: $slug}) {\n    ...Collection\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {collections_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CollectionPageCollectionsDocument,
     "query ProductPageById($id: ID!) {\n  product(where: {id: $id}) {\n    ...ProductBase\n    variants {\n      ... on ProductSizeColorVariant {\n        id\n        name\n        size\n        color\n      }\n    }\n    collections {\n      id\n      name\n    }\n    categories {\n      id\n      name\n    }\n  }\n}\n\nquery ProductPageRelated($categoryId: ID!) {\n  products(where: {categories_some: {id: $categoryId}}) {\n    ...ProductBase\n  }\n}": types.ProductPageByIdDocument,
+    "query SearchPageProducts($search: String!, $first: Int!, $skip: Int!) {\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {_search: $search}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.SearchPageProductsDocument,
     "query ProductsGetList {\n  products(first: 10) {\n    id\n    name\n    description\n    categories(first: 1) {\n      name\n    }\n    images(first: 1) {\n      url\n    }\n    price\n  }\n}": types.ProductsGetListDocument,
     "fragment Aggregate on Aggregate {\n  count\n}": types.AggregateFragmentDoc,
     "fragment Category on Category {\n  id\n  name\n  description\n  slug\n}": types.CategoryFragmentDoc,
@@ -37,6 +38,10 @@ export function graphql(source: "query CollectionPageCollections {\n  collection
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query ProductPageById($id: ID!) {\n  product(where: {id: $id}) {\n    ...ProductBase\n    variants {\n      ... on ProductSizeColorVariant {\n        id\n        name\n        size\n        color\n      }\n    }\n    collections {\n      id\n      name\n    }\n    categories {\n      id\n      name\n    }\n  }\n}\n\nquery ProductPageRelated($categoryId: ID!) {\n  products(where: {categories_some: {id: $categoryId}}) {\n    ...ProductBase\n  }\n}"): typeof import('./graphql').ProductPageByIdDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query SearchPageProducts($search: String!, $first: Int!, $skip: Int!) {\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {_search: $search}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').SearchPageProductsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,0 +1,15 @@
+query SearchPageProducts($search: String!, $first: Int!, $skip: Int!) {
+	products: productsConnection(first: $first, skip: $skip, where: { _search: $search }) {
+		aggregate {
+			...Aggregate
+		}
+		edges {
+			node {
+				...ProductBase
+			}
+		}
+		pageInfo {
+			...PageInfo
+		}
+	}
+}

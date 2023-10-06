@@ -2,6 +2,9 @@
 
 const nextConfig = {
 	experimental: { typedRoutes: true },
+	env: {
+		GRAPHQL_URL: process.env.GRAPHQL_URL,
+	},
 	redirects: async () => [
 		{
 			source: "/products",
