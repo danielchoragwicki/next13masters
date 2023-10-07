@@ -23,8 +23,8 @@ export const Navbar = () => {
 			<div className="navbar-start">
 				<a className="btn btn-ghost text-xl normal-case">next13masters</a>
 			</div>
-			<nav className="navbar-center hidden lg:flex">
-				<ul className="menu bg-base-200 lg:menu-horizontal rounded-box">
+			<nav className="navbar-center hidden lg:flex" role="navigation">
+				<ul className="menu rounded-box bg-base-200 lg:menu-horizontal">
 					{items.map((item) => (
 						<li key={item.title}>
 							<ActiveLink activeClassName="active" exact={item.exact} href={item.href}>

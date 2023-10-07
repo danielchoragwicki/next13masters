@@ -7,10 +7,12 @@ type ProductListProps = {
 
 export const ProductList = ({ products }: ProductListProps) => {
 	return (
-		<div className="grid grid-cols-4 gap-8" data-testid="products-list">
+		<ul className="grid grid-cols-4 gap-8" data-testid="products-list">
 			{products.map((product) => (
-				<ProductItem key={product.id} product={product} />
+				<li key={product.id}>
+					<ProductItem product={product} />
+				</li>
 			))}
-		</div>
+		</ul>
 	);
 };

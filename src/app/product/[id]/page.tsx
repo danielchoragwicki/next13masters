@@ -4,9 +4,6 @@ import { executeGraphql } from "@/utils/executeGraphql";
 import { ProductPageByIdDocument, ProductPageRelatedDocument } from "@/gql/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
-import { Hero } from "@/ui/atoms/Hero";
-import Image from "next/image";
-import { formatMoney } from "@/utils";
 import { ProductDetails } from "@/ui/organisms/ProductDetails";
 
 type ProductPageParams = { id?: string };
@@ -39,8 +36,6 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 	} catch {
 		notFound();
 	}
-
-	const firstImage = data.product.images?.[0];
 
 	return (
 		<SubPageContainer>
