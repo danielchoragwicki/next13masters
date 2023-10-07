@@ -19,5 +19,13 @@ export const SearchInput = () => {
 		debouncedValue && router.replace(`/search?query=${debouncedValue}`);
 	}, [debouncedValue, router]);
 
-	return <input value={value} onChange={handleChange} />;
+	return (
+		<input
+			className="input input-bordered"
+			onChange={handleChange}
+			placeholder="Search for..."
+			type="text"
+			value={value}
+		/>
+	);
 };

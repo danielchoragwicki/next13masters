@@ -1,6 +1,6 @@
 import { type Route } from "next";
-import { ActiveLink } from "../atoms/ActiveLink";
-import { SearchInput } from "../molecules/SearchInput";
+import { ActiveLink } from "@/ui/atoms/ActiveLink";
+import { SearchInput } from "@/ui/molecules/SearchInput";
 import { CATEGORIES } from "@/constants";
 
 const items: {
@@ -19,22 +19,24 @@ const items: {
 
 export const Navbar = () => {
 	return (
-		<nav>
-			<ul>
-				{items.map((item) => (
-					<li key={item.title}>
-						<ActiveLink
-							href={item.href}
-							className=""
-							activeClassName="border-b-2 border-blue-950"
-							exact={item.exact}
-						>
-							{item.title}
-						</ActiveLink>
-					</li>
-				))}
-			</ul>
-			<SearchInput />
-		</nav>
+		<header className="navbar bg-base-100">
+			<div className="navbar-start">
+				<a className="btn btn-ghost text-xl normal-case">next13masters</a>
+			</div>
+			<nav className="navbar-center hidden lg:flex">
+				<ul className="menu bg-base-200 lg:menu-horizontal rounded-box">
+					{items.map((item) => (
+						<li key={item.title}>
+							<ActiveLink activeClassName="active" exact={item.exact} href={item.href}>
+								{item.title}
+							</ActiveLink>
+						</li>
+					))}
+				</ul>
+			</nav>
+			<div className="navbar-end">
+				<SearchInput />
+			</div>
+		</header>
 	);
 };

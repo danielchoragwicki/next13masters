@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export type ActiveLinkProps<T extends string> = {
 	activeClassName: string;
 	children: React.ReactNode;
-	className: string;
+	className?: string;
 	exact?: boolean;
 	href: Route<T>;
 };
