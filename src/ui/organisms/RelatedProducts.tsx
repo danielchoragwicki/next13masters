@@ -7,10 +7,13 @@ type RelatedProductsProps = {
 
 export const RelatedProducts = ({ products }: RelatedProductsProps) => {
 	return (
-		<section data-testid="related-products">
-			{products.map((product) => (
-				<ProductItem key={product.id} product={product} />
-			))}
+		<section className="pt-16">
+			<h1 className="text-2xl font-bold">Similar Products</h1>
+			<div className="grid grid-cols-4 gap-8" data-testid="related-products">
+				{products.map((product) => (
+					<ProductItem key={product.id} product={product} />
+				))}
+			</div>
 		</section>
 	);
 };

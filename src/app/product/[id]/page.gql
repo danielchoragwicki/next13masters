@@ -2,6 +2,7 @@ query ProductPageById($id: ID!) {
 	product(where: { id: $id }) {
 		...ProductBase
 		variants {
+			__typename
 			... on ProductSizeColorVariant {
 				id
 				name
@@ -20,8 +21,8 @@ query ProductPageById($id: ID!) {
 	}
 }
 
-query ProductPageRelated($categoryId: ID!) {
-	products(where: { categories_some: { id: $categoryId } }) {
+query ProductPageRelated($categoryId: ID!, $productId: ID!) {
+	products(where: { categories_some: { id: $categoryId }, id_not: $productId }) {
 		...ProductBase
 	}
 }

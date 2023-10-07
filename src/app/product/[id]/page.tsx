@@ -3,6 +3,11 @@ import { type Metadata } from "next";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { ProductPageByIdDocument, ProductPageRelatedDocument } from "@/gql/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
+import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
+import { Hero } from "@/ui/atoms/Hero";
+import Image from "next/image";
+import { formatMoney } from "@/utils";
+import { ProductDetails } from "@/ui/organisms/ProductDetails";
 
 type ProductPageParams = { id?: string };
 type ProductPageProps = { params: ProductPageParams };
@@ -27,6 +32,7 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 		data = await executeGraphql(ProductPageByIdDocument, { id });
 		relatedProducts = await executeGraphql(ProductPageRelatedDocument, {
 			categoryId: data.product?.categories[0]?.id ?? "",
+			productId: id,
 		});
 
 		if (!data.product) throw new Error("No product");
@@ -34,10 +40,12 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 		notFound();
 	}
 
+	const firstImage = data.product.images?.[0];
+
 	return (
-		<section>
-			<code>{JSON.stringify(data, null, 2)}</code>
+		<SubPageContainer>
+			<ProductDetails product={data.product} />
 			<RelatedProducts products={relatedProducts.products.slice(0, 4) || []} />
-		</section>
+		</SubPageContainer>
 	);
 }

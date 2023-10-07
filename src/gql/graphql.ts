@@ -10783,10 +10783,11 @@ export type ProductPageByIdQueryVariables = Exact<{
 }>;
 
 
-export type ProductPageByIdQuery = { product?: { id: string, name: string, slug: string, description: string, price: number, variants: Array<{ id: string, name: string, size: ProductSize, color: ProductColor } | {}>, collections: Array<{ id: string, name: string }>, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } | null };
+export type ProductPageByIdQuery = { product?: { id: string, name: string, slug: string, description: string, price: number, variants: Array<{ __typename: 'ProductColorVariant' } | { __typename: 'ProductSizeColorVariant', id: string, name: string, size: ProductSize, color: ProductColor } | { __typename: 'ProductSizeVariant' }>, collections: Array<{ id: string, name: string }>, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } | null };
 
 export type ProductPageRelatedQueryVariables = Exact<{
   categoryId: Scalars['ID']['input'];
+  productId: Scalars['ID']['input'];
 }>;
 
 
@@ -11066,6 +11067,7 @@ export const ProductPageByIdDocument = new TypedDocumentString(`
   product(where: {id: $id}) {
     ...ProductBase
     variants {
+      __typename
       ... on ProductSizeColorVariant {
         id
         name
@@ -11101,8 +11103,8 @@ export const ProductPageByIdDocument = new TypedDocumentString(`
   }
 }`) as unknown as TypedDocumentString<ProductPageByIdQuery, ProductPageByIdQueryVariables>;
 export const ProductPageRelatedDocument = new TypedDocumentString(`
-    query ProductPageRelated($categoryId: ID!) {
-  products(where: {categories_some: {id: $categoryId}}) {
+    query ProductPageRelated($categoryId: ID!, $productId: ID!) {
+  products(where: {categories_some: {id: $categoryId}, id_not: $productId}) {
     ...ProductBase
   }
 }
