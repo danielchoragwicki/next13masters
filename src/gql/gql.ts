@@ -14,30 +14,40 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  categories(where: {slug: $slug}) {\n    ...Category\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {categories_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CategoryPageBySlugDocument,
-    "query CollectionPageCollections {\n  collections {\n    ...Collection\n  }\n}\n\nquery CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  collections(where: {slug: $slug}) {\n    ...Collection\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {collections_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CollectionPageCollectionsDocument,
+    "query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  categories(where: {slug: $slug}) {\n    ...Category\n  }\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {categories_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CategoryPageBySlugDocument,
+    "query CollectionPageCollections {\n  collections {\n    ...Collection\n  }\n}\n\nquery CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  collections(where: {slug: $slug}) {\n    ...Collection\n  }\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {collections_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.CollectionPageCollectionsDocument,
+    "query RootPage($first: Int!, $skip: Int!) {\n  collections {\n    ...Collection\n  }\n  products: productsConnection(first: $first, skip: $skip) {\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n  }\n}": types.RootPageDocument,
     "query ProductPageById($id: ID!) {\n  product(where: {id: $id}) {\n    ...ProductBase\n    variants {\n      ... on ProductSizeColorVariant {\n        id\n        name\n        size\n        color\n      }\n    }\n    collections {\n      id\n      name\n    }\n    categories {\n      id\n      name\n    }\n  }\n}\n\nquery ProductPageRelated($categoryId: ID!) {\n  products(where: {categories_some: {id: $categoryId}}) {\n    ...ProductBase\n  }\n}": types.ProductPageByIdDocument,
+    "query ProductsPage($first: Int!, $skip: Int!) {\n  products: productsConnection(first: $first, skip: $skip) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.ProductsPageDocument,
     "query SearchPageProducts($search: String!, $first: Int!, $skip: Int!) {\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {_search: $search}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}": types.SearchPageProductsDocument,
     "query ProductsGetList {\n  products(first: 10) {\n    id\n    name\n    description\n    categories(first: 1) {\n      name\n    }\n    images(first: 1) {\n      url\n    }\n    price\n  }\n}": types.ProductsGetListDocument,
     "fragment Aggregate on Aggregate {\n  count\n}": types.AggregateFragmentDoc,
     "fragment Category on Category {\n  id\n  name\n  description\n  slug\n}": types.CategoryFragmentDoc,
-    "fragment Collection on Collection {\n  id\n  name\n  description\n  slug\n}": types.CollectionFragmentDoc,
+    "fragment Collection on Collection {\n  id\n  name\n  description\n  slug\n  image {\n    height\n    width\n    url\n  }\n}": types.CollectionFragmentDoc,
     "fragment PageInfo on PageInfo {\n  hasNextPage\n  hasPreviousPage\n  pageSize\n}": types.PageInfoFragmentDoc,
-    "fragment ProductBase on Product {\n  id\n  name\n  slug\n  description\n  price\n}": types.ProductBaseFragmentDoc,
+    "fragment ProductBase on Product {\n  id\n  name\n  slug\n  description\n  price\n  categories {\n    id\n    name\n  }\n  images {\n    id\n    height\n    url\n    width\n  }\n}": types.ProductBaseFragmentDoc,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  categories(where: {slug: $slug}) {\n    ...Category\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {categories_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').CategoryPageBySlugDocument;
+export function graphql(source: "query CategoryPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  categories(where: {slug: $slug}) {\n    ...Category\n  }\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {categories_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').CategoryPageBySlugDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query CollectionPageCollections {\n  collections {\n    ...Collection\n  }\n}\n\nquery CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  collections(where: {slug: $slug}) {\n    ...Collection\n  }\n  productsConnection(\n    first: $first\n    skip: $skip\n    where: {collections_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').CollectionPageCollectionsDocument;
+export function graphql(source: "query CollectionPageCollections {\n  collections {\n    ...Collection\n  }\n}\n\nquery CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {\n  collections(where: {slug: $slug}) {\n    ...Collection\n  }\n  products: productsConnection(\n    first: $first\n    skip: $skip\n    where: {collections_some: {slug: $slug}}\n  ) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').CollectionPageCollectionsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query RootPage($first: Int!, $skip: Int!) {\n  collections {\n    ...Collection\n  }\n  products: productsConnection(first: $first, skip: $skip) {\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n  }\n}"): typeof import('./graphql').RootPageDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query ProductPageById($id: ID!) {\n  product(where: {id: $id}) {\n    ...ProductBase\n    variants {\n      ... on ProductSizeColorVariant {\n        id\n        name\n        size\n        color\n      }\n    }\n    collections {\n      id\n      name\n    }\n    categories {\n      id\n      name\n    }\n  }\n}\n\nquery ProductPageRelated($categoryId: ID!) {\n  products(where: {categories_some: {id: $categoryId}}) {\n    ...ProductBase\n  }\n}"): typeof import('./graphql').ProductPageByIdDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query ProductsPage($first: Int!, $skip: Int!) {\n  products: productsConnection(first: $first, skip: $skip) {\n    aggregate {\n      ...Aggregate\n    }\n    edges {\n      node {\n        ...ProductBase\n      }\n    }\n    pageInfo {\n      ...PageInfo\n    }\n  }\n}"): typeof import('./graphql').ProductsPageDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -57,7 +67,7 @@ export function graphql(source: "fragment Category on Category {\n  id\n  name\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "fragment Collection on Collection {\n  id\n  name\n  description\n  slug\n}"): typeof import('./graphql').CollectionFragmentDoc;
+export function graphql(source: "fragment Collection on Collection {\n  id\n  name\n  description\n  slug\n  image {\n    height\n    width\n    url\n  }\n}"): typeof import('./graphql').CollectionFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -65,7 +75,7 @@ export function graphql(source: "fragment PageInfo on PageInfo {\n  hasNextPage\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "fragment ProductBase on Product {\n  id\n  name\n  slug\n  description\n  price\n}"): typeof import('./graphql').ProductBaseFragmentDoc;
+export function graphql(source: "fragment ProductBase on Product {\n  id\n  name\n  slug\n  description\n  price\n  categories {\n    id\n    name\n  }\n  images {\n    id\n    height\n    url\n    width\n  }\n}"): typeof import('./graphql').ProductBaseFragmentDoc;
 
 
 export function graphql(source: string) {

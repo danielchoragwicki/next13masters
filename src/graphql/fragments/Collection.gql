@@ -3,4 +3,9 @@ fragment Collection on Collection {
 	name
 	description
 	slug
+	image {
+		height
+		width
+		url
+	}
 }

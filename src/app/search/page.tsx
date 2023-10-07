@@ -2,6 +2,9 @@ import { notFound } from "next/navigation";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { SearchPageProductsDocument } from "@/gql/graphql";
 import { paginationHelper } from "@/utils";
+import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
+import { Hero } from "@/ui/atoms/Hero";
+import { ProductList } from "@/ui/organisms/ProductList";
 
 type SearchPageSearchParams = { query: string };
 type SearchPageProps = { searchParams: SearchPageSearchParams };
@@ -10,19 +13,24 @@ export default async function SearchPage({ searchParams: { query } }: SearchPage
 	let data;
 
 	try {
-		await new Promise((resolve) => setTimeout(resolve, 3000));
-
 		data = await executeGraphql(SearchPageProductsDocument, {
 			search: query || "",
-			...paginationHelper("1"),
+			...paginationHelper("1", 100),
 		});
 	} catch {
 		notFound();
 	}
 
 	return (
-		<div>
-			<pre>{JSON.stringify(data, null, 2)}</pre>
-		</div>
+		<SubPageContainer>
+			<Hero title={`Found ${data.products.aggregate.count} items for phrase "${query}"`} />
+			<ProductList products={data.products.edges.map((edge) => edge.node)} />
+			{/* TODO: add pagination */}
+			{/* <Pagination
+				pageSize={PAGE_LIMIT}
+				setHref={(page) => `/categories/${slug}/${page}`}
+				totalCount={data.products.aggregate.count}
+			/> */}
+		</SubPageContainer>
 	);
 }

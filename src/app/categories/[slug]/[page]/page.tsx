@@ -4,6 +4,10 @@ import { CategoryPageBySlugDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { paginationHelper } from "@/utils";
 import { CATEGORIES, PAGE_LIMIT } from "@/constants";
+import { ProductList } from "@/ui/organisms/ProductList";
+import { Hero } from "@/ui/atoms/Hero";
+import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
+import { Pagination } from "@/ui/organisms/Pagination";
 
 type CategoryPageParams = { slug?: string; page?: string };
 type CategoryPageProps = { params: CategoryPageParams };
@@ -31,7 +35,7 @@ export async function generateStaticParams() {
 				skip: 0,
 			});
 			const prevCategories = await acc;
-			const pageCount = Math.ceil(data.productsConnection.aggregate.count / PAGE_LIMIT);
+			const pageCount = Math.ceil(data.products.aggregate.count / PAGE_LIMIT);
 
 			const categories = Array.from({ length: pageCount }, (_, index) => ({
 				slug: category.slug,
@@ -55,14 +59,20 @@ export default async function CategoryPage({ params: { page, slug } }: CategoryP
 		data = await executeGraphql(CategoryPageBySlugDocument, { slug, ...paginationHelper(page) });
 
 		if (!data.categories.length) throw new Error("No category");
-		if (!data.productsConnection.pageInfo.pageSize) throw new Error("No products");
+		if (!data.products.pageInfo.pageSize) throw new Error("No products");
 	} catch {
 		notFound();
 	}
 
 	return (
-		<div>
-			<pre>{JSON.stringify(data, null, 2)}</pre>
-		</div>
+		<SubPageContainer>
+			<Hero title={data.categories[0]?.name ?? ""} />
+			<ProductList products={data.products.edges.map((edge) => edge.node)} />
+			<Pagination
+				pageSize={PAGE_LIMIT}
+				setHref={(page) => `/categories/${slug}/${page}`}
+				totalCount={data.products.aggregate.count}
+			/>
+		</SubPageContainer>
 	);
 }

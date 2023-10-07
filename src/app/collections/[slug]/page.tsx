@@ -2,6 +2,11 @@ import { notFound } from "next/navigation";
 import { type Metadata } from "next";
 import { CollectionPageBySlugDocument, CollectionPageCollectionsDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";
+import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
+import { Hero } from "@/ui/atoms/Hero";
+import { ProductList } from "@/ui/organisms/ProductList";
+import { Pagination } from "@/ui/organisms/Pagination";
+import { PAGE_LIMIT } from "@/constants";
 
 type CollectionPageParams = { slug?: string };
 type CollectionPageProps = { params: CollectionPageParams };
@@ -36,14 +41,20 @@ export default async function CollectionPage({ params: { slug } }: CollectionPag
 			skip: 0,
 		});
 
-		if (!data.productsConnection.pageInfo.pageSize) throw new Error("No products");
+		if (!data.products.pageInfo.pageSize) throw new Error("No products");
 	} catch {
 		notFound();
 	}
 
 	return (
-		<div>
-			<pre>{JSON.stringify(data, null, 2)}</pre>
-		</div>
+		<SubPageContainer>
+			<Hero title={data.collections[0]?.name ?? ""} />
+			<ProductList products={data.products.edges.map((edge) => edge.node)} />
+			<Pagination
+				pageSize={PAGE_LIMIT}
+				setHref={(page) => `/categories/${slug}/${page}`}
+				totalCount={data.products.aggregate.count}
+			/>
+		</SubPageContainer>
 	);
 }

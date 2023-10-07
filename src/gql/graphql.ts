@@ -10754,12 +10754,12 @@ export type CategoryPageBySlugQueryVariables = Exact<{
 }>;
 
 
-export type CategoryPageBySlugQuery = { categories: Array<{ id: string, name: string, description?: string | null, slug: string }>, productsConnection: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
+export type CategoryPageBySlugQuery = { categories: Array<{ id: string, name: string, description?: string | null, slug: string }>, products: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
 
 export type CollectionPageCollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CollectionPageCollectionsQuery = { collections: Array<{ id: string, name: string, description?: string | null, slug: string }> };
+export type CollectionPageCollectionsQuery = { collections: Array<{ id: string, name: string, description?: string | null, slug: string, image: { height?: number | null, width?: number | null, url: string } }> };
 
 export type CollectionPageBySlugQueryVariables = Exact<{
   slug: Scalars['String']['input'];
@@ -10768,21 +10768,37 @@ export type CollectionPageBySlugQueryVariables = Exact<{
 }>;
 
 
-export type CollectionPageBySlugQuery = { collections: Array<{ id: string, name: string, description?: string | null, slug: string }>, productsConnection: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
+export type CollectionPageBySlugQuery = { collections: Array<{ id: string, name: string, description?: string | null, slug: string, image: { height?: number | null, width?: number | null, url: string } }>, products: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
+
+export type RootPageQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  skip: Scalars['Int']['input'];
+}>;
+
+
+export type RootPageQuery = { collections: Array<{ id: string, name: string, description?: string | null, slug: string, image: { height?: number | null, width?: number | null, url: string } }>, products: { edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } }> } };
 
 export type ProductPageByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type ProductPageByIdQuery = { product?: { id: string, name: string, slug: string, description: string, price: number, variants: Array<{ id: string, name: string, size: ProductSize, color: ProductColor } | {}>, collections: Array<{ id: string, name: string }>, categories: Array<{ id: string, name: string }> } | null };
+export type ProductPageByIdQuery = { product?: { id: string, name: string, slug: string, description: string, price: number, variants: Array<{ id: string, name: string, size: ProductSize, color: ProductColor } | {}>, collections: Array<{ id: string, name: string }>, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } | null };
 
 export type ProductPageRelatedQueryVariables = Exact<{
   categoryId: Scalars['ID']['input'];
 }>;
 
 
-export type ProductPageRelatedQuery = { products: Array<{ id: string, name: string, slug: string, description: string, price: number }> };
+export type ProductPageRelatedQuery = { products: Array<{ id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> }> };
+
+export type ProductsPageQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  skip: Scalars['Int']['input'];
+}>;
+
+
+export type ProductsPageQuery = { products: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
 
 export type SearchPageProductsQueryVariables = Exact<{
   search: Scalars['String']['input'];
@@ -10791,7 +10807,7 @@ export type SearchPageProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchPageProductsQuery = { products: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
+export type SearchPageProductsQuery = { products: { aggregate: { count: number }, edges: Array<{ node: { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> } }>, pageInfo: { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null } } };
 
 export type ProductsGetListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10802,11 +10818,11 @@ export type AggregateFragment = { count: number };
 
 export type CategoryFragment = { id: string, name: string, description?: string | null, slug: string };
 
-export type CollectionFragment = { id: string, name: string, description?: string | null, slug: string };
+export type CollectionFragment = { id: string, name: string, description?: string | null, slug: string, image: { height?: number | null, width?: number | null, url: string } };
 
 export type PageInfoFragment = { hasNextPage: boolean, hasPreviousPage: boolean, pageSize?: number | null };
 
-export type ProductBaseFragment = { id: string, name: string, slug: string, description: string, price: number };
+export type ProductBaseFragment = { id: string, name: string, slug: string, description: string, price: number, categories: Array<{ id: string, name: string }>, images: Array<{ id: string, height?: number | null, url: string, width?: number | null }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -10841,6 +10857,11 @@ export const CollectionFragmentDoc = new TypedDocumentString(`
   name
   description
   slug
+  image {
+    height
+    width
+    url
+  }
 }
     `, {"fragmentName":"Collection"}) as unknown as TypedDocumentString<CollectionFragment, unknown>;
 export const PageInfoFragmentDoc = new TypedDocumentString(`
@@ -10857,6 +10878,16 @@ export const ProductBaseFragmentDoc = new TypedDocumentString(`
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }
     `, {"fragmentName":"ProductBase"}) as unknown as TypedDocumentString<ProductBaseFragment, unknown>;
 export const CategoryPageBySlugDocument = new TypedDocumentString(`
@@ -10864,7 +10895,7 @@ export const CategoryPageBySlugDocument = new TypedDocumentString(`
   categories(where: {slug: $slug}) {
     ...Category
   }
-  productsConnection(
+  products: productsConnection(
     first: $first
     skip: $skip
     where: {categories_some: {slug: $slug}}
@@ -10902,6 +10933,16 @@ fragment ProductBase on Product {
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }`) as unknown as TypedDocumentString<CategoryPageBySlugQuery, CategoryPageBySlugQueryVariables>;
 export const CollectionPageCollectionsDocument = new TypedDocumentString(`
     query CollectionPageCollections {
@@ -10914,13 +10955,18 @@ export const CollectionPageCollectionsDocument = new TypedDocumentString(`
   name
   description
   slug
+  image {
+    height
+    width
+    url
+  }
 }`) as unknown as TypedDocumentString<CollectionPageCollectionsQuery, CollectionPageCollectionsQueryVariables>;
 export const CollectionPageBySlugDocument = new TypedDocumentString(`
     query CollectionPageBySlug($slug: String!, $first: Int!, $skip: Int!) {
   collections(where: {slug: $slug}) {
     ...Collection
   }
-  productsConnection(
+  products: productsConnection(
     first: $first
     skip: $skip
     where: {collections_some: {slug: $slug}}
@@ -10946,6 +10992,11 @@ fragment Collection on Collection {
   name
   description
   slug
+  image {
+    height
+    width
+    url
+  }
 }
 fragment PageInfo on PageInfo {
   hasNextPage
@@ -10958,7 +11009,58 @@ fragment ProductBase on Product {
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }`) as unknown as TypedDocumentString<CollectionPageBySlugQuery, CollectionPageBySlugQueryVariables>;
+export const RootPageDocument = new TypedDocumentString(`
+    query RootPage($first: Int!, $skip: Int!) {
+  collections {
+    ...Collection
+  }
+  products: productsConnection(first: $first, skip: $skip) {
+    edges {
+      node {
+        ...ProductBase
+      }
+    }
+  }
+}
+    fragment Collection on Collection {
+  id
+  name
+  description
+  slug
+  image {
+    height
+    width
+    url
+  }
+}
+fragment ProductBase on Product {
+  id
+  name
+  slug
+  description
+  price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
+}`) as unknown as TypedDocumentString<RootPageQuery, RootPageQueryVariables>;
 export const ProductPageByIdDocument = new TypedDocumentString(`
     query ProductPageById($id: ID!) {
   product(where: {id: $id}) {
@@ -10987,6 +11089,16 @@ export const ProductPageByIdDocument = new TypedDocumentString(`
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }`) as unknown as TypedDocumentString<ProductPageByIdQuery, ProductPageByIdQueryVariables>;
 export const ProductPageRelatedDocument = new TypedDocumentString(`
     query ProductPageRelated($categoryId: ID!) {
@@ -11000,7 +11112,58 @@ export const ProductPageRelatedDocument = new TypedDocumentString(`
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }`) as unknown as TypedDocumentString<ProductPageRelatedQuery, ProductPageRelatedQueryVariables>;
+export const ProductsPageDocument = new TypedDocumentString(`
+    query ProductsPage($first: Int!, $skip: Int!) {
+  products: productsConnection(first: $first, skip: $skip) {
+    aggregate {
+      ...Aggregate
+    }
+    edges {
+      node {
+        ...ProductBase
+      }
+    }
+    pageInfo {
+      ...PageInfo
+    }
+  }
+}
+    fragment Aggregate on Aggregate {
+  count
+}
+fragment PageInfo on PageInfo {
+  hasNextPage
+  hasPreviousPage
+  pageSize
+}
+fragment ProductBase on Product {
+  id
+  name
+  slug
+  description
+  price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
+}`) as unknown as TypedDocumentString<ProductsPageQuery, ProductsPageQueryVariables>;
 export const SearchPageProductsDocument = new TypedDocumentString(`
     query SearchPageProducts($search: String!, $first: Int!, $skip: Int!) {
   products: productsConnection(
@@ -11035,6 +11198,16 @@ fragment ProductBase on Product {
   slug
   description
   price
+  categories {
+    id
+    name
+  }
+  images {
+    id
+    height
+    url
+    width
+  }
 }`) as unknown as TypedDocumentString<SearchPageProductsQuery, SearchPageProductsQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
     query ProductsGetList {

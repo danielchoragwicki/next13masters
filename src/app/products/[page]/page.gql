@@ -1,0 +1,15 @@
+query ProductsPage($first: Int!, $skip: Int!) {
+	products: productsConnection(first: $first, skip: $skip) {
+		aggregate {
+			...Aggregate
+		}
+		edges {
+			node {
+				...ProductBase
+			}
+		}
+		pageInfo {
+			...PageInfo
+		}
+	}
+}

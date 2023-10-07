@@ -4,4 +4,14 @@ fragment ProductBase on Product {
 	slug
 	description
 	price
+	categories {
+		id
+		name
+	}
+	images {
+		id
+		height
+		url
+		width
+	}
 }

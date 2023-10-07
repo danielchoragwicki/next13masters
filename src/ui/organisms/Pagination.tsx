@@ -1,44 +1,29 @@
-import { ActiveLink } from "../atoms/ActiveLink";
+import { ActiveLink, type ActiveLinkProps } from "../atoms/ActiveLink";
 
-export type PaginationProps = {
-	currentPage: number;
+export type PaginationProps<T extends string> = {
+	setHref: (page: number) => ActiveLinkProps<T>["href"];
 	pageSize: number;
 	totalCount: number;
 };
 
-export const Pagination = ({ currentPage, pageSize, totalCount }: PaginationProps) => {
-	const pages = Array.from({ length: totalCount / pageSize }, (_, i) => i + 1);
+export const Pagination = <T extends string>({
+	pageSize,
+	setHref,
+	totalCount,
+}: PaginationProps<T>) => {
+	const pages = Array.from({ length: Math.ceil(totalCount / pageSize) }, (_, i) => i + 1);
 
+	if (pages.length < 2) return null;
 	return (
-		<nav aria-label="Pagination">
-			<ul className="list-style-none flex">
-				<li>
-					<a
-						className="relative block rounded bg-slate-600 px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-						href={`/products/${currentPage - 1}`}
-					>
-						Previous
-					</a>
-				</li>
+		<nav className="mt-16 flex justify-center">
+			<ul className="join" aria-label="Pagination">
 				{pages.map((page) => (
 					<li key={page}>
-						<ActiveLink
-							className="relative block rounded bg-slate-600 px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-							activeClassName="bg-neutral-700"
-							href={`/products/${page}`}
-						>
+						<ActiveLink className="join-item btn" activeClassName="btn-active" href={setHref(page)}>
 							{page}
 						</ActiveLink>
 					</li>
 				))}
-				<li>
-					<a
-						className="relative block rounded bg-slate-600 px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-						href={`/products/${currentPage + 1}`}
-					>
-						Next
-					</a>
-				</li>
 			</ul>
 		</nav>
 	);
