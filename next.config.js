@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-	experimental: { typedRoutes: true },
+	experimental: { typedRoutes: true, serverActions: true },
 	env: {
 		GRAPHQL_URL: process.env.GRAPHQL_URL,
+		HYGRAPH_MUTATION_TOKEN: process.env.HYGRAPH_MUTATION_TOKEN,
 	},
 	redirects: async () => [
 		{

@@ -16,29 +16,36 @@ export async function generateMetadata({
 }: {
 	params: CollectionPageParams;
 }): Promise<Metadata> {
-	const data = await executeGraphql(CollectionPageBySlugDocument, {
-		slug: slug || "",
-		first: 0,
-		skip: 0,
+	const data = await executeGraphql({
+		query: CollectionPageBySlugDocument,
+		variables: {
+			slug: slug || "",
+			first: 0,
+			skip: 0,
+		},
 	});
 
 	return { title: data.collections[0]?.name, description: data.collections[0]?.description };
 }
 
-export async function generateStaticParams() {
-	const data = await executeGraphql(CollectionPageCollectionsDocument);
+// TODO: uncomment before release
+// export async function generateStaticParams() {
+// 	const data = await executeGraphql({ query: CollectionPageCollectionsDocument });
 
-	return data.collections.map((collection) => ({ slug: collection.slug }));
-}
+// 	return data.collections.map((collection) => ({ slug: collection.slug }));
+// }
 
 export default async function CollectionPage({ params: { slug } }: CollectionPageProps) {
 	let data;
 
 	try {
-		data = await executeGraphql(CollectionPageBySlugDocument, {
-			slug: slug || "",
-			first: 10,
-			skip: 0,
+		data = await executeGraphql({
+			query: CollectionPageBySlugDocument,
+			variables: {
+				slug: slug || "",
+				first: 10,
+				skip: 0,
+			},
 		});
 
 		if (!data.products.pageInfo.pageSize) throw new Error("No products");

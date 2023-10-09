@@ -23,24 +23,30 @@ export async function generateMetadata({
 	};
 }
 
-export async function generateStaticParams() {
-	const data = await executeGraphql(ProductsPageDocument, {
-		first: 0,
-		skip: 0,
-	});
+// export async function generateStaticParams() {
+// 	const data = await executeGraphql({
+// 		query: ProductsPageDocument,
+// 		variables: {
+// 			first: 0,
+// 			skip: 0,
+// 		},
+// 	});
 
-	const pageCount = Math.ceil(data.products.aggregate.count / PAGE_LIMIT);
+// 	const pageCount = Math.ceil(data.products.aggregate.count / PAGE_LIMIT);
 
-	return Array.from({ length: pageCount }, (_, index) => ({
-		page: (index + 1).toString(),
-	})) as unknown as ProductsPageParams[];
-}
+// 	return Array.from({ length: pageCount }, (_, index) => ({
+// 		page: (index + 1).toString(),
+// 	})) as unknown as ProductsPageParams[];
+// }
 
 export default async function ProductsPage({ params: { page } }: ProductsPageProps) {
 	let data;
 
 	try {
-		data = await executeGraphql(ProductsPageDocument, { ...paginationHelper(page) });
+		data = await executeGraphql({
+			query: ProductsPageDocument,
+			variables: { ...paginationHelper(page) },
+		});
 
 		if (!data.products.pageInfo.pageSize) throw new Error("No products");
 	} catch {

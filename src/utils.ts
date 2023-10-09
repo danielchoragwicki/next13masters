@@ -1,7 +1,7 @@
 import { PAGE_LIMIT } from "./constants";
 
 export const formatMoney = (amount: number) =>
-	new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
+	new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount / 100);
 
 export const paginationHelper = (
 	page: string = "1",

@@ -3,7 +3,7 @@ import { type Metadata } from "next";
 import { CategoryPageBySlugDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { paginationHelper } from "@/utils";
-import { CATEGORIES, PAGE_LIMIT } from "@/constants";
+import { PAGE_LIMIT } from "@/constants";
 import { ProductList } from "@/ui/organisms/ProductList";
 import { Hero } from "@/ui/atoms/Hero";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
@@ -17,38 +17,45 @@ export async function generateMetadata({
 }: {
 	params: CategoryPageParams;
 }): Promise<Metadata> {
-	const data = await executeGraphql(CategoryPageBySlugDocument, {
-		slug: slug || "",
-		first: 0,
-		skip: 0,
+	const data = await executeGraphql({
+		query: CategoryPageBySlugDocument,
+		variables: {
+			slug: slug || "",
+			first: 0,
+			skip: 0,
+		},
 	});
 
 	return { title: data.categories[0]?.name, description: data.categories[0]?.description };
 }
 
-export async function generateStaticParams() {
-	const params = await CATEGORIES.reduce(
-		async (acc, category) => {
-			const data = await executeGraphql(CategoryPageBySlugDocument, {
-				slug: category.slug,
-				first: 0,
-				skip: 0,
-			});
-			const prevCategories = await acc;
-			const pageCount = Math.ceil(data.products.aggregate.count / PAGE_LIMIT);
+// TODO: uncomment before release
+// export async function generateStaticParams() {
+// 	const params = await CATEGORIES.reduce(
+// 		async (acc, category) => {
+// 			const data = await executeGraphql({
+// 				query: CategoryPageBySlugDocument,
+// 				variables: {
+// 					slug: category.slug,
+// 					first: 0,
+// 					skip: 0,
+// 				},
+// 			});
+// 			const prevCategories = await acc;
+// 			const pageCount = Math.ceil(data.products.aggregate.count / PAGE_LIMIT);
 
-			const categories = Array.from({ length: pageCount }, (_, index) => ({
-				slug: category.slug,
-				page: (index + 1).toString(),
-			})) as unknown as CategoryPageParams[];
+// 			const categories = Array.from({ length: pageCount }, (_, index) => ({
+// 				slug: category.slug,
+// 				page: (index + 1).toString(),
+// 			})) as unknown as CategoryPageParams[];
 
-			return [...prevCategories, ...categories];
-		},
-		Promise.resolve([] as CategoryPageParams[]),
-	);
+// 			return [...prevCategories, ...categories];
+// 		},
+// 		Promise.resolve([] as CategoryPageParams[]),
+// 	);
 
-	return params;
-}
+// 	return params;
+// }
 
 export default async function CategoryPage({ params: { page, slug } }: CategoryPageProps) {
 	let data;
@@ -56,7 +63,10 @@ export default async function CategoryPage({ params: { page, slug } }: CategoryP
 	try {
 		if (!slug) throw new Error("No slug");
 
-		data = await executeGraphql(CategoryPageBySlugDocument, { slug, ...paginationHelper(page) });
+		data = await executeGraphql({
+			query: CategoryPageBySlugDocument,
+			variables: { slug, ...paginationHelper(page) },
+		});
 
 		if (!data.categories.length) throw new Error("No category");
 		if (!data.products.pageInfo.pageSize) throw new Error("No products");

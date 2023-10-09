@@ -5,7 +5,7 @@ import { ProductList } from "@/ui/organisms/ProductList";
 import { executeGraphql } from "@/utils/executeGraphql";
 
 export default async function Home() {
-	const data = await executeGraphql(RootPageDocument, { first: 4, skip: 0 });
+	const data = await executeGraphql({ query: RootPageDocument, variables: { first: 4, skip: 0 } });
 
 	return (
 		<SubPageContainer>

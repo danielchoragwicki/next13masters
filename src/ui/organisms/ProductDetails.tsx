@@ -1,14 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import {
-	type ProductPageByIdQuery,
-	type ProductBaseFragment,
-	type ProductSize,
-	type ProductColor,
-} from "@/gql/graphql";
+import { useState } from "react";
+import { AddToCartButton } from "../atoms/AddToCartButton";
+import { type ProductPageByIdQuery, type ProductSize, type ProductColor } from "@/gql/graphql";
 import { formatMoney } from "@/utils";
+import { addProductToCartAction } from "@/api/cart";
 
 type ProductDetailsProps = {
 	product: ProductPageByIdQuery["product"];
@@ -16,6 +13,7 @@ type ProductDetailsProps = {
 
 export const ProductDetails = ({ product }: ProductDetailsProps) => {
 	const [size, setSize] = useState<ProductSize>();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [color, setColor] = useState<ProductColor>();
 
 	if (!product) return null;
@@ -60,6 +58,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 													className="btn join-item"
 													name={variant.size}
 													onClick={() => setSize(variant.size)}
+													onChange={() => {}}
 													type="radio"
 												/>
 											),
@@ -86,6 +85,10 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 							</>
 						)}
 					</div>
+					<form action={addProductToCartAction}>
+						<input type="text" name="productId" value={product.id} hidden onChange={() => {}} />
+						<AddToCartButton />
+					</form>
 				</div>
 			</div>
 		</div>

@@ -13,9 +13,12 @@ export default async function SearchPage({ searchParams: { query } }: SearchPage
 	let data;
 
 	try {
-		data = await executeGraphql(SearchPageProductsDocument, {
-			search: query || "",
-			...paginationHelper("1", 100),
+		data = await executeGraphql({
+			query: SearchPageProductsDocument,
+			variables: {
+				search: query || "",
+				...paginationHelper("1", 100),
+			},
 		});
 	} catch {
 		notFound();

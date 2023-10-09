@@ -14,7 +14,10 @@ export async function generateMetadata({
 }: {
 	params: ProductPageParams;
 }): Promise<Metadata> {
-	const data = await executeGraphql(ProductPageByIdDocument, { id: id || "" });
+	const data = await executeGraphql({
+		query: ProductPageByIdDocument,
+		variables: { id: id || "" },
+	});
 
 	return { title: data.product?.name, description: data.product?.description };
 }
@@ -26,10 +29,13 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 	try {
 		if (!id) throw new Error("No id");
 
-		data = await executeGraphql(ProductPageByIdDocument, { id });
-		relatedProducts = await executeGraphql(ProductPageRelatedDocument, {
-			categoryId: data.product?.categories[0]?.id ?? "",
-			productId: id,
+		data = await executeGraphql({ query: ProductPageByIdDocument, variables: { id } });
+		relatedProducts = await executeGraphql({
+			query: ProductPageRelatedDocument,
+			variables: {
+				categoryId: data.product?.categories[0]?.id ?? "",
+				productId: id,
+			},
 		});
 
 		if (!data.product) throw new Error("No product");
