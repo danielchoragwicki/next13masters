@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Stripe from "stripe";
 import { ChangeQuantity } from "./ChangeQuantity";
 import { RemoveButton } from "./RemoveButton";
 import { CartGetByIdDocument } from "@/gql/graphql";

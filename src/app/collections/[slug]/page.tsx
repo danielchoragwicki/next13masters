@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { type Metadata } from "next";
-import { CollectionPageBySlugDocument, CollectionPageCollectionsDocument } from "@/gql/graphql";
+import { CollectionPageBySlugDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
 import { Hero } from "@/ui/atoms/Hero";
