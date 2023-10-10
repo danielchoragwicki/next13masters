@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export type ActiveLinkProps<T extends string> = {
 	activeClassName: string;
 	children: React.ReactNode;
-	className: string;
+	className?: string;
 	exact?: boolean;
 	href: Route<T>;
 };
@@ -24,7 +24,12 @@ export const ActiveLink = <T extends string>({
 	const active = exact ? href === pathname : pathname.startsWith(href);
 
 	return (
-		<Link className={clsx(className, active && activeClassName)} href={href}>
+		<Link
+			className={clsx(className, active && activeClassName)}
+			href={href}
+			role="link"
+			aria-current={active ? "page" : undefined}
+		>
 			{children}
 		</Link>
 	);

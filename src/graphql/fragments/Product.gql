@@ -1,0 +1,17 @@
+fragment ProductBase on Product {
+	id
+	name
+	slug
+	description
+	price
+	categories {
+		id
+		name
+	}
+	images {
+		id
+		height
+		url
+		width
+	}
+}

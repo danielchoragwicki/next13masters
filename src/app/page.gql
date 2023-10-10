@@ -1,0 +1,12 @@
+query RootPage($first: Int!, $skip: Int!) {
+	collections {
+		...Collection
+	}
+	products: productsConnection(first: $first, skip: $skip) {
+		edges {
+			node {
+				...ProductBase
+			}
+		}
+	}
+}

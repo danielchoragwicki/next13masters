@@ -1,7 +1,16 @@
-export default function Home() {
+import { RootPageDocument } from "@/gql/graphql";
+import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
+import { CollectionList } from "@/ui/organisms/CollectionList";
+import { ProductList } from "@/ui/organisms/ProductList";
+import { executeGraphql } from "@/utils/executeGraphql";
+
+export default async function Home() {
+	const data = await executeGraphql({ query: RootPageDocument, variables: { first: 4, skip: 0 } });
+
 	return (
-		<section className="mx-auto h-screen max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-			Test
-		</section>
+		<SubPageContainer>
+			<CollectionList collections={data.collections} />
+			<ProductList products={data.products.edges.map((edge) => edge.node)} />
+		</SubPageContainer>
 	);
 }
