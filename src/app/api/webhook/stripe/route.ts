@@ -31,7 +31,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 
 	switch (event.type) {
 		case "checkout.session.completed": {
-			console.log("event", event);
+			// TODO
+			// console.log("event.data.object.metadata?.cartId", event.data.object.metadata?.cartId);
+			// console.dir(event, { depth: 999 });
 			event.data.object.metadata?.cartId;
 		}
 	}

@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Navbar } from "@/ui/organisms/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,12 +19,14 @@ export default function RootLayout({
 	modal: React.ReactNode;
 }) {
 	return (
-		<html lang="en" data-theme="winter">
-			<body className={inter.className}>
-				<Navbar />
-				<main className="pb-16">{children}</main>
-				{modal}
-			</body>
-		</html>
+		<ClerkProvider>
+			<html lang="en" data-theme="winter">
+				<body className={inter.className}>
+					<Navbar />
+					<main className="pb-16">{children}</main>
+					{modal}
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

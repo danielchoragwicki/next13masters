@@ -1,6 +1,7 @@
 import { type Route } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ActiveLink } from "@/ui/atoms/ActiveLink";
 import { SearchInput } from "@/ui/molecules/SearchInput";
 import { CATEGORIES } from "@/constants";
@@ -74,6 +75,12 @@ export async function Navbar() {
 					</svg>
 					<span>{count}</span>
 				</Link>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
+				<SignedOut>
+					<SignInButton />
+				</SignedOut>
 			</div>
 		</header>
 	);
