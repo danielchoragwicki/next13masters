@@ -19,6 +19,8 @@ export default authMiddleware({
 		// @ts-expect-error FIXME
 		"/product/(.*)",
 		"/products",
+		// @ts-expect-error FIXME
+		"/opengraph-image",
 	],
 	ignoredRoutes: ["/api/webhook/stripe"],
 });

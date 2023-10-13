@@ -6,7 +6,7 @@ import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
 import { ProductDetails } from "@/ui/organisms/ProductDetails";
 
-type ProductPageParams = { id?: string };
+export type ProductPageParams = { id?: string };
 type ProductPageProps = { params: ProductPageParams };
 
 export async function generateMetadata({
