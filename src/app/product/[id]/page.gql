@@ -18,6 +18,9 @@ query ProductPageById($id: ID!) {
 			id
 			name
 		}
+		reviews {
+			...Review
+		}
 	}
 }
 

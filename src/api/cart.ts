@@ -65,12 +65,24 @@ async function addProductToCart(cartId: string, productId: string) {
 		throw new Error(`Product with id ${productId} not found`);
 	}
 
+	const { order: cart } = await executeGraphql({
+		query: CartGetByIdDocument,
+		variables: {
+			id: cartId,
+		},
+		cache: "no-store",
+	});
+
+	const orderItem = cart?.orderItems.find((item) => item.product?.id === productId);
+
 	await executeGraphql({
 		query: CartAddProductDocument,
 		variables: {
 			orderId: cartId,
 			productId,
 			total: product.price,
+			quantity: (orderItem?.quantity ?? 0) + 1,
+			orderItemId: orderItem?.id ?? "",
 		},
 		cache: "no-store",
 	});
@@ -93,11 +105,11 @@ export async function handleStripePaymentAction() {
 		return;
 	}
 
+	// @ts-expect-error FIXME
 	const session = await stripe.checkout.sessions.create({
 		metadata: {
 			cartId: cart.id,
 		},
-		// @ts-expect-error FIXME
 		line_items: cart.orderItems
 			.map((item) =>
 				item.product

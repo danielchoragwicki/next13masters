@@ -3,7 +3,7 @@ import { type Metadata } from "next";
 import { CategoryPageBySlugDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";
 import { paginationHelper } from "@/utils";
-import { PAGE_LIMIT } from "@/constants";
+import { PAGE_LIMIT_CATEGORY } from "@/constants";
 import { ProductList } from "@/ui/organisms/ProductList";
 import { Hero } from "@/ui/atoms/Hero";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
@@ -65,7 +65,7 @@ export default async function CategoryPage({ params: { page, slug } }: CategoryP
 
 		data = await executeGraphql({
 			query: CategoryPageBySlugDocument,
-			variables: { slug, ...paginationHelper(page) },
+			variables: { slug, ...paginationHelper(page, PAGE_LIMIT_CATEGORY) },
 		});
 
 		if (!data.categories.length) throw new Error("No category");
@@ -79,7 +79,7 @@ export default async function CategoryPage({ params: { page, slug } }: CategoryP
 			<Hero title={data.categories[0]?.name ?? ""} />
 			<ProductList products={data.products.edges.map((edge) => edge.node)} />
 			<Pagination
-				pageSize={PAGE_LIMIT}
+				pageSize={PAGE_LIMIT_CATEGORY}
 				setHref={(page) => `/categories/${slug}/${page}`}
 				totalCount={data.products.aggregate.count}
 			/>

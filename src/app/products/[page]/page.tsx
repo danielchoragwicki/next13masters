@@ -3,14 +3,15 @@ import { type Metadata } from "next";
 import { Pagination } from "@/ui/organisms/Pagination";
 import { ProductList } from "@/ui/organisms/ProductList";
 import { executeGraphql } from "@/utils/executeGraphql";
-import { ProductsPageDocument } from "@/gql/graphql";
+import { type ProductOrderByInput, ProductsPageDocument } from "@/gql/graphql";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
 import { Hero } from "@/ui/atoms/Hero";
 import { PAGE_LIMIT } from "@/constants";
 import { paginationHelper } from "@/utils";
 
 type ProductsPageParams = { page?: string };
-type ProductsPageProps = { params: ProductsPageParams };
+type ProductsPageSearchParams = { sortBy: ProductOrderByInput };
+type ProductsPageProps = { params: ProductsPageParams; searchParams: ProductsPageSearchParams };
 
 export async function generateMetadata({
 	params: { page },
@@ -39,13 +40,16 @@ export async function generateMetadata({
 // 	})) as unknown as ProductsPageParams[];
 // }
 
-export default async function ProductsPage({ params: { page } }: ProductsPageProps) {
+export default async function ProductsPage({
+	params: { page },
+	searchParams: { sortBy },
+}: ProductsPageProps) {
 	let data;
 
 	try {
 		data = await executeGraphql({
 			query: ProductsPageDocument,
-			variables: { ...paginationHelper(page) },
+			variables: { ...paginationHelper(page), orderBy: sortBy },
 		});
 
 		if (!data.products.pageInfo.pageSize) throw new Error("No products");
@@ -56,7 +60,10 @@ export default async function ProductsPage({ params: { page } }: ProductsPagePro
 	return (
 		<SubPageContainer>
 			<Hero title={"All products"} />
-			<ProductList products={data.products.edges.map((edge) => edge.node)} />
+			<ProductList
+				orderSelect={{ route: "/products" }}
+				products={data.products.edges.map((edge) => edge.node)}
+			/>
 			<Pagination
 				pageSize={PAGE_LIMIT}
 				setHref={(page) => `/products/${page}`}

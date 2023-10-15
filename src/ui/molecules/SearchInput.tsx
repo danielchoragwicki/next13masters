@@ -25,6 +25,7 @@ export const SearchInput = () => {
 			onChange={handleChange}
 			placeholder="Search for..."
 			type="text"
+			role="searchbox"
 			value={value}
 		/>
 	);

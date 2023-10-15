@@ -1,5 +1,5 @@
-query ProductsPage($first: Int!, $skip: Int!) {
-	products: productsConnection(first: $first, skip: $skip) {
+query ProductsPage($first: Int!, $skip: Int!, $orderBy: ProductOrderByInput) {
+	products: productsConnection(first: $first, skip: $skip, orderBy: $orderBy) {
 		aggregate {
 			...Aggregate
 		}

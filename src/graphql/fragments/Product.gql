@@ -4,6 +4,7 @@ fragment ProductBase on Product {
 	slug
 	description
 	price
+	averageRating
 	categories {
 		id
 		name

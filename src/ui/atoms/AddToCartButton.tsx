@@ -10,6 +10,7 @@ export function AddToCartButton() {
 			type="submit"
 			disabled={status.pending}
 			className="disabled: btn btn-neutral disabled:cursor-wait"
+			data-testid="add-to-cart-button"
 		>
 			Add to cart
 			{status.pending && <span className="loading loading-spinner"></span>}

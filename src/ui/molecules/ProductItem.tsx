@@ -12,7 +12,7 @@ export const ProductItem = ({ product }: ProductItemProps) => {
 
 	return (
 		<Link
-			className="card card-compact bg-base-100 shadow-xl transition-all hover:scale-105"
+			className="card-compact card bg-base-100 shadow-xl transition-all hover:scale-105"
 			href={`/product/${product.id}`}
 		>
 			<figure className="px-10 pt-10">
@@ -29,7 +29,12 @@ export const ProductItem = ({ product }: ProductItemProps) => {
 				<h2 className="card-title">{product.name}</h2>
 				<p>{product.categories.map((category) => category.name)?.join(", ")}</p>
 				<div className="card-actions justify-end">
-					<div className="badge badge-secondary">{formatMoney(product.price)}</div>
+					<div className="badge badge-secondary" data-testid="product-price">
+						{formatMoney(product.price)}
+					</div>
+					<div className="badge badge-accent" data-testid="product-rating">
+						{product.averageRating ?? "-"}
+					</div>
 				</div>
 			</div>
 		</Link>

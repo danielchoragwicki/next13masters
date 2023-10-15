@@ -16,10 +16,10 @@ export const Pagination = <T extends string>({
 	if (pages.length < 2) return null;
 	return (
 		<nav className="mt-16 flex justify-center">
-			<ul className="join" aria-label="Pagination">
+			<ul className="join" aria-label="pagination">
 				{pages.map((page) => (
 					<li key={page}>
-						<ActiveLink className="join-item btn" activeClassName="btn-active" href={setHref(page)}>
+						<ActiveLink className="btn join-item" activeClassName="btn-active" href={setHref(page)}>
 							{page}
 						</ActiveLink>
 					</li>

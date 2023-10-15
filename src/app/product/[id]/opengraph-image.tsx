@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/server";
-import Image from "next/image";
 import { type ProductPageParams } from "./page";
 import { ProductPageByIdDocument } from "@/gql/graphql";
 import { executeGraphql } from "@/utils/executeGraphql";

@@ -1,0 +1,14 @@
+mutation CreateReview($data: ReviewCreateInput!, $productId: ID!, $averageRating: Float!) {
+	createReview(data: $data) {
+		...Review
+	}
+	updateProduct(data: { averageRating: $averageRating }, where: { id: $productId }) {
+		id
+	}
+}
+
+mutation PublishReview($reviewId: ID!) {
+	publishReview(to: PUBLISHED, where: { id: $reviewId }) {
+		id
+	}
+}

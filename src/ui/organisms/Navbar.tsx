@@ -50,7 +50,11 @@ export async function Navbar() {
 				<ul className="menu rounded-box bg-base-200 lg:menu-horizontal">
 					{items.map((item) => (
 						<li key={item.title}>
-							<ActiveLink activeClassName="active" exact={item.exact} href={item.href}>
+							<ActiveLink
+								activeClassName="active border-transparent"
+								exact={item.exact}
+								href={item.href}
+							>
 								{item.title}
 							</ActiveLink>
 						</li>

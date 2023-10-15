@@ -4,6 +4,9 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
 	publicRoutes: [
 		"/",
+		// @ts-expect-error FIXME
+		"/products/(.*)",
+		"/products",
 		"/search",
 		"/cart",
 		// @ts-expect-error FIXME
@@ -18,11 +21,8 @@ export default authMiddleware({
 		"/product",
 		// @ts-expect-error FIXME
 		"/product/(.*)",
-		"/products",
-		// @ts-expect-error FIXME
-		"/opengraph-image",
 	],
-	ignoredRoutes: ["/api/webhook/stripe"],
+	ignoredRoutes: ["/opengraph-image", "/api/webhook", "/api/webhook/stripe"],
 });
 
 export const config = {

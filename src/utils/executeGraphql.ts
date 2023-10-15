@@ -37,6 +37,8 @@ export async function executeGraphql<TResult, TVariables>({
 	const graphqlResponse = (await res.json()) as GraphQLResponse<TResult>;
 
 	if (graphqlResponse.errors) {
+		console.dir(graphqlResponse.errors, { depth: 999, colors: "#0FF" });
+
 		throw TypeError(`GraphQL Error`, {
 			cause: graphqlResponse.errors,
 		});

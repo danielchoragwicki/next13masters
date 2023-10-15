@@ -3,7 +3,7 @@
 import { type Route } from "next";
 import Link from "next/link";
 import { clsx } from "clsx";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export type ActiveLinkProps<T extends string> = {
 	activeClassName: string;
@@ -22,11 +22,13 @@ export const ActiveLink = <T extends string>({
 }: ActiveLinkProps<T>) => {
 	const pathname = usePathname();
 	const active = exact ? href === pathname : pathname.startsWith(href);
+	const searchParams = useSearchParams();
 
 	return (
 		<Link
 			className={clsx(className, active && activeClassName)}
-			href={href}
+			// @ts-expect-error FIXME
+			href={{ pathname: href, search: searchParams }}
 			role="link"
 			aria-current={active ? "page" : undefined}
 		>

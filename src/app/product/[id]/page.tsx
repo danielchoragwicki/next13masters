@@ -5,6 +5,7 @@ import { ProductPageByIdDocument, ProductPageRelatedDocument } from "@/gql/graph
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { SubPageContainer } from "@/ui/atoms/SubPageContainer";
 import { ProductDetails } from "@/ui/organisms/ProductDetails";
+import { ReviewForm } from "@/ui/organisms/ReviewForm";
 
 export type ProductPageParams = { id?: string };
 type ProductPageProps = { params: ProductPageParams };
@@ -29,7 +30,12 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 	try {
 		if (!id) throw new Error("No id");
 
-		data = await executeGraphql({ query: ProductPageByIdDocument, variables: { id } });
+		data = await executeGraphql({
+			query: ProductPageByIdDocument,
+			variables: { id },
+			next: { revalidate: 1 },
+			cache: "no-store",
+		});
 		relatedProducts = await executeGraphql({
 			query: ProductPageRelatedDocument,
 			variables: {
@@ -46,6 +52,7 @@ export default async function Product({ params: { id } }: ProductPageProps) {
 	return (
 		<SubPageContainer>
 			<ProductDetails product={data.product} />
+			<ReviewForm reviews={data.product.reviews} product={data.product} />
 			<RelatedProducts products={relatedProducts.products.slice(0, 4) || []} />
 		</SubPageContainer>
 	);
